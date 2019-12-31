@@ -1,0 +1,70 @@
+name: glue
+version: "0.1"
+about: Rust-VMM based hypervisor.
+args:
+  - verbose:
+      short: v
+      long: verbose
+      multiple: true
+      help: Sets the level of verbosity
+subcommands:
+  - run:
+      about: Start the virtual machine
+      args:
+        - name:
+            short: n
+            long: name
+            help: A name for the VM
+            takes_value: true
+        - cpus:
+            short: c
+            long: cpus
+            help: Number of CPUs
+            takes_value: true
+        - mem:
+            short: m
+            long: mem
+            help: Memory size in MB
+            takes_value: true
+        - disk:
+            short: d
+            long: disk
+            value_name: FILE
+            help: Disk image
+            takes_value: true
+        - kernel:
+            short: k
+            long: kernel
+            value_name: FILE
+            help: Kernel to boot
+            takes_value: true
+        - params:
+            short: p
+            long: params
+            help: Kernel command line arguments
+            takes_value: true
+  - pause:
+      about: Pause the virtual machine
+      args:
+        - name:
+            short: n
+            long: name
+            help: Name of the VM
+            takes_value: true
+  - resume:
+      about: Resume the virtual machine
+      args:
+        - name:
+            short: n
+            long: name
+            help: Name of the VM
+            takes_value: true
+  - stop:
+      about: Stop the virtual machine
+      args:
+        - name:
+            short: n
+            long: name
+            help: Name of the VM
+            takes_value: true
+      
