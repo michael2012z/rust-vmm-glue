@@ -20,11 +20,13 @@ subcommands:
             short: c
             long: cpus
             help: Number of CPUs
+            default_value: "1"
             takes_value: true
         - mem:
             short: m
             long: mem
             help: Memory size in MB
+            default_value: "512"
             takes_value: true
         - disk:
             short: d
