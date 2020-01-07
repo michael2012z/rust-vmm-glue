@@ -28,7 +28,7 @@ The reference implementation bears 2 major targets:
 - Subcommands
   - The reference implementation works in the way of subcommands. The command format looks like:
 
-``` glue [FLAGS] [subcommand] [OPTIONS] ```
+> ``` glue [FLAGS] [subcommand] [OPTIONS] ```
 
 - Process diagram of RUN subcommand
   - ![](https://raw.githubusercontent.com/michael2012z/rust-vmm-glue/master/docs/images/cmd_run.png "RUN subcommand")
@@ -101,9 +101,13 @@ OPTIONS:
 
 #### Cover as many use cases as possible
 - Build
-Customize hypervisor (glue) by specifying different features/components and build.
+
+Customize hypervisor (glue) by specifying testing manifest file (it's Cargo.toml by default) with different features/components and build. 
+
+>  ``` cargo build --manifest-path ./tests/build/example.toml ``` 
 
 - Basic
+
 Basic functions of VM:
   - Lifecycle
   - Kernel load
@@ -112,17 +116,22 @@ Basic functions of VM:
   - vcpus
   - Memory
   - ...
+  
 - Devices
+
 Device integration tests:
   - PCI
   - GPU
   - Combinations
   - ...
+  
 - Features
+
 Features of rust-vmm components and their combinations
   - To be scoped.
 
 - Performance
+
 Performance tests, typically:
   - Boot time
   - Process start time
