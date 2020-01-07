@@ -7,33 +7,33 @@ The reference implementation bears 2 major targets:
 * An example to show how to use Rust-VMM.
 * Rust-VMM components integration test.
 
-### Design:
-#### Principles of the design:
+### Design
+#### Principles of the design
 
-- Simple:
-  - The architecture should be direct forward. Make it easy for people to understand how rust-vmm components are connected to build a hypervisor. A good reference is kvmtool (https://git.kernel.org/pub/scm/linux/kernel/git/will/kvmtool.git), it is "a clean, from-scratch, lightweight KVM host tool". It shares the similar goal of our reference implementation. 
-  - To keep simple, the reference implementation program is not designed into centerlization mode: no daemon, no API server.
+- Simple
+  - The architecture of the reference implementation should be simple. It should be easy for people to understand how rust-vmm components are connected to build a hypervisor. 
+  - A good reference is kvmtool (https://git.kernel.org/pub/scm/linux/kernel/git/will/kvmtool.git), it is "a clean, from-scratch, lightweight KVM host tool". This reference shares the same goal. 
+  - To keep simple, the reference program is not designed in centerlization mode: no daemon, no API server.
 
-- General purposed:
-  - The main consuming projects of rust-vmm (Firecracker and Clould-Hypervisor now, CrosVM may in future) each has its own character and focus. But this reference implementation should be general purposed, it should cover variant use cases. For example, the reference implementation should devices commonly used.
+- General purposed
+  - The main consuming projects of rust-vmm (Firecracker and Clould-Hypervisor now, CrosVM may in future) each has its own character and focus. But this reference implementation should be general purposed, it should cover variant use cases. For example, it should support devices commonly used as many as possible.
   - Integrate all functional components (crates).
 
 #### Practical Design
-- Prototype: I am making a prototype of the design at: https://github.com/michael2012z/rust-vmm-glue
-- Binary:
-The reference implementation was built into a single binary file. I assume the binary is named as "glue" (means glue of rust-vmm components) in following description.
+- Prototype
+  - I am making a prototype of the design at: https://github.com/michael2012z/rust-vmm-glue
+- Binary
+  - The reference implementation was built into a single binary file. I assume the binary is named as "glue" (means glue of rust-vmm components) in following description.
 
-- Subcommands: 
-
+- Subcommands
   - The reference implementation works in the way of subcommands. The command format looks like:
 
 ``` glue [FLAGS] [subcommand] [OPTIONS] ```
 
 - Process diagram of RUN subcommand
-
   - ![](https://raw.githubusercontent.com/michael2012z/rust-vmm-glue/master/docs/images/cmd_run.png "RUN subcommand")
 
-- Usage examples:
+- Usage examples
   - HELP subcommand
 ```
 $ ./target/debug/glue --help
@@ -97,7 +97,7 @@ OPTIONS:
     -n, --name <name>    Name of the VM
 ```
 
-### Integration test:
+### Integration test
 
 #### Cover as many use cases as possible
 - Build
@@ -129,7 +129,7 @@ Performance tests, typically:
   - Device IO time
   - ...
 
-#### Test framework candidates:
+#### Test framework candidates
 This is to be discussed, should we use Pytest like Firecracker do or use Rust test.
 - Pytest (I prefer this)
   - "Fixture" is a powerful feature of Pytest, which makes it easy to prepare a VM instance with proper capability (like netowrk, network, etc) for test case.
