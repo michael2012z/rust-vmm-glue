@@ -1,0 +1,22 @@
+@startuml
+start
+partition cmd_run() {
+	:parse_config();
+	partition vm_init() {
+		:load kernel;
+		:configure vcpus;
+		:configure memory;
+		:configure devices;
+		:configure architecture;
+	}
+
+	partition vm_start() {
+		:set signal handlers;
+		repeat
+			:enter cpu loop;
+		repeat while (exit?) is (no)
+		->yes;
+	}
+}
+stop
+@enduml
