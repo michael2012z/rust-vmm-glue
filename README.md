@@ -28,13 +28,14 @@ The reference implementation bears 2 major targets:
 - Subcommands
   - The reference implementation works in the way of subcommands. The command format looks like:
 
-> ``` glue [FLAGS] [subcommand] [OPTIONS] ```
+  - > ``` glue [FLAGS] [subcommand] [OPTIONS] ```
 
 - Process diagram of RUN subcommand
   - ![](https://raw.githubusercontent.com/michael2012z/rust-vmm-glue/master/docs/images/cmd_run.png "RUN subcommand")
 
 - Usage examples
-  - HELP subcommand
+
+HELP subcommand
 ```
 $ ./target/debug/glue --help
 glue 0.1
@@ -58,7 +59,7 @@ SUBCOMMANDS:
 
 ```
 
-  - RUN subcommand
+RUN subcommand
 ```
 $ ./target/debug/glue run --help
 glue-run 
@@ -80,7 +81,7 @@ OPTIONS:
     -p, --params <params>    Kernel command line arguments
 ```
 
-  - PAUSE subcommand
+PAUSE subcommand
 ```
 $ ./target/debug/glue pause --help
 glue-pause 
@@ -100,15 +101,10 @@ OPTIONS:
 ### Integration test
 
 #### Cover as many use cases as possible
-- Build
+- Build - Customize hypervisor (glue) by specifying testing manifest file (it's Cargo.toml by default) with different features/components and build. 
+  - >  ``` cargo build --manifest-path ./tests/build/example.toml ``` 
 
-Customize hypervisor (glue) by specifying testing manifest file (it's Cargo.toml by default) with different features/components and build. 
-
->  ``` cargo build --manifest-path ./tests/build/example.toml ``` 
-
-- Basic
-
-Basic functions of VM:
+- Basic - Basic functions of VM.
   - Lifecycle
   - Kernel load
   - Kernel command line
@@ -117,29 +113,23 @@ Basic functions of VM:
   - Memory
   - ...
   
-- Devices
-
-Device integration tests:
+- Devices - Device integration tests.
   - PCI
   - GPU
   - Combinations
   - ...
   
-- Features
-
-Features of rust-vmm components and their combinations
+- Features - Features of rust-vmm components and their combinations.
   - To be scoped.
-
-- Performance
-
-Performance tests, typically:
+  
+- Performance - Performance tests, typically:
   - Boot time
   - Process start time
   - Device IO time
   - ...
 
 #### Test framework candidates
-This is to be discussed, should we use Pytest like Firecracker do or use Rust test.
+This is to be discussed. Should we use Pytest like Firecracker do or use Rust test?
 - Pytest (I prefer this)
   - "Fixture" is a powerful feature of Pytest, which makes it easy to prepare a VM instance with proper capability (like netowrk, network, etc) for test case.
   - Firecraker has a good test codebase writen in Pytest for reference.
