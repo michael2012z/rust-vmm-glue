@@ -11,41 +11,44 @@ The reference implementation bears 2 major targets:
 #### Principles of the design:
 
 - Simple:
- - The architecture should be direct forward. Make it easy for people to understand how rust-vmm components are connected to build a hypervisor. A good reference is kvmtool (https://git.kernel.org/pub/scm/linux/kernel/git/will/kvmtool.git), it is "a clean, from-scratch, lightweight KVM host tool". It shares the similar goal of our reference implementation. 
- - To keep simple, the reference implementation program is not designed into centerlization mode: no daemon, no API server.
+  - The architecture should be direct forward. Make it easy for people to understand how rust-vmm components are connected to build a hypervisor. A good reference is kvmtool (https://git.kernel.org/pub/scm/linux/kernel/git/will/kvmtool.git), it is "a clean, from-scratch, lightweight KVM host tool". It shares the similar goal of our reference implementation. 
+  - To keep simple, the reference implementation program is not designed into centerlization mode: no daemon, no API server.
 
 - General purposed:
- - The main consuming projects of rust-vmm (Firecracker and Clould-Hypervisor now, CrosVM may in future) each has its own character and focus. But this reference implementation should be general purposed, it should cover variant use cases. For example, the reference implementation should devices commonly used.
- - Integrate all functional components (crates).
+  - The main consuming projects of rust-vmm (Firecracker and Clould-Hypervisor now, CrosVM may in future) each has its own character and focus. But this reference implementation should be general purposed, it should cover variant use cases. For example, the reference implementation should devices commonly used.
+  - Integrate all functional components (crates).
 
-#### Process Description
+#### Practical Design
+- Prototype: I am making a prototype of the design at: https://github.com/michael2012z/rust-vmm-glue
 - Binary:
 The reference implementation was built into a single binary file. I assume the binary is named as "glue" (means glue of rust-vmm components) in following description.
 
 - Subcommands: 
-The reference implementation works in the way of subcommands. The command styles like:
-> glue [FLAGS] [subcommand] [OPTIONS]
+
+  - The reference implementation works in the way of subcommands. The command format looks like:
+
+``` glue [FLAGS] [subcommand] [OPTIONS] ```
 
 - Process diagram of RUN subcommand
 
-![Alt Text](http://bit.ly/1drEdWK "Title")
+  - ![](https://raw.githubusercontent.com/michael2012z/rust-vmm-glue/master/docs/images/cmd_run.png "RUN subcommand")
 
 - Usage examples:
- - subcommand help
+  - HELP subcommand
 ```
-  $ ./target/debug/glue --help
+$ ./target/debug/glue --help
 glue 0.1
 Rust-VMM based hypervisor.
 
-  USAGE:
+USAGE:
     glue [FLAGS] [SUBCOMMAND]
 
-  FLAGS:
+FLAGS:
     -h, --help       Prints help information
     -V, --version    Prints version information
     -v, --verbose    Sets the level of verbosity
 
-  SUBCOMMANDS:
+SUBCOMMANDS:
     help      Prints this message or the help of the given subcommand(s)
     pause     Pause the virtual machine
     resume    Resume the virtual machine
@@ -55,7 +58,7 @@ Rust-VMM based hypervisor.
 
 ```
 
- - subcommand run
+  - RUN subcommand
 ```
 $ ./target/debug/glue run --help
 glue-run 
@@ -77,7 +80,7 @@ OPTIONS:
     -p, --params <params>    Kernel command line arguments
 ```
 
- - subcommand pause
+  - PAUSE subcommand
 ```
 $ ./target/debug/glue pause --help
 glue-pause 
@@ -102,37 +105,37 @@ Customize hypervisor (glue) by specifying different features/components and buil
 
 - Basic
 Basic functions of VM:
- - Lifecycle
- - Kernel load
- - Kernel command line
- - RootFS load
- - vcpus
- - Memory
- - ...
+  - Lifecycle
+  - Kernel load
+  - Kernel command line
+  - RootFS load
+  - vcpus
+  - Memory
+  - ...
 - Devices
 Device integration tests:
- - PCI
- - GPU
- - Combinations
- - ...
+  - PCI
+  - GPU
+  - Combinations
+  - ...
 - Features
 Features of rust-vmm components and their combinations
- - To be scoped.
+  - To be scoped.
 
 - Performance
 Performance tests, typically:
- - Boot time
- - Process start time
- - Device IO time
- - ...
+  - Boot time
+  - Process start time
+  - Device IO time
+  - ...
 
 #### Test framework candidates:
 This is to be discussed, should we use Pytest like Firecracker do or use Rust test.
 - Pytest (I prefer this)
- - "Fixture" is a powerful feature of Pytest, which makes it easy to prepare a VM instance with proper capability (like netowrk, network, etc) for test case.
- - Firecraker has a good test codebase writen in Pytest for reference.
- - Python is easy to use and to integrate in CI.
+  - "Fixture" is a powerful feature of Pytest, which makes it easy to prepare a VM instance with proper capability (like netowrk, network, etc) for test case.
+  - Firecraker has a good test codebase writen in Pytest for reference.
+  - Python is easy to use and to integrate in CI.
 - Rust
- - Using Rust native test is an alternative solution. 
- - Align the test code with function code looks good.
- - We need to implement a test framework from scratch. I didn't know much about popular Rust test framework. If there is, things could be different.
+  - Using Rust native test is an alternative solution. 
+  - Align the test code with function code looks good.
+  - We need to implement a test framework from scratch. I didn't know much about popular Rust test framework. If there is, things could be different.
