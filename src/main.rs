@@ -4,7 +4,11 @@ use clap::App;
 use std::*;
 
 mod config;
+mod cpu;
+mod error;
+mod memory;
 mod vm;
+mod vmm;
 
 fn main() {
     let yaml = load_yaml!("cli.yml");
@@ -21,19 +25,19 @@ fn main() {
 
             let vm_config = config::VmConfig::new(cpus, mem);
 
-            vm::Vm::run_vm(vm_config);
+            vmm::Vmm::new().unwrap().run_vm(vm_config);
         }
         ("pause", Some(pause_matches)) => {
             let name = pause_matches.value_of("name").unwrap();
-            vm::Vm::pause_vm(name);
+            vmm::Vmm::new().unwrap().pause_vm(name);
         }
         ("resume", Some(resume_matches)) => {
             let name = resume_matches.value_of("name").unwrap();
-            vm::Vm::resume_vm(name);
+            vmm::Vmm::new().unwrap().resume_vm(name);
         }
         ("stop", Some(stop_matches)) => {
             let name = stop_matches.value_of("name").unwrap();
-            vm::Vm::stop_vm(name);
+            vmm::Vmm::new().unwrap().stop_vm(name);
         }
         ("", None) => {}
         _ => {}
