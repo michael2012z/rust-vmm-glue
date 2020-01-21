@@ -1,36 +1,44 @@
 use crate::config::VmConfig;
+use crate::cpu::VmCpu;
+use crate::error::*;
+use crate::memory::VmMemory;
 use kvm_ioctls::Kvm;
+use kvm_ioctls::VmFd;
 
-/*
-pub enum Error {
-    VmRun(kvm_ioctls::Error),
-    VmPause(kvm_ioctls::Error),
-    VmResume(kvm_ioctls::Error),
-    VmStop(kvm_ioctls::Error),
+pub struct Vm {
+    fd: VmFd,
+    memory: VmMemory,
+    cpus: VmCpu,
 }
- */
-
-pub struct Vm {}
 
 impl Vm {
-    pub fn run_vm(vm_config: VmConfig) {
-        println!(
-            "run_vm: cpus: {}, mem: {} MB",
-            vm_config.boot_vcpus, vm_config.memory_size
-        );
-        let kvm = Kvm::new().unwrap();
-        kvm.create_vm().unwrap();
+    pub fn new(kvm: &Kvm, vm_config: VmConfig) -> Result<Self> {
+        // Create VM.
+        let fd = kvm.create_vm().unwrap();
+
+        // Setup memory.
+        let mut memory = VmMemory::new()?;
+        memory.vm_memory_init(vm_config.memory_size as usize);
+
+        let cpus = VmCpu::new()?;
+
+        Ok(Vm { fd, memory, cpus })
+
+        /*
+        // Setup CPUs
+        let entry_addr = self.load_kernel()?;
+        let vcpus = self.create_vcpus(entry_addr)?;
+
+        self.setup_irqchip()?;
+
+        // Setup devices.
+
+        // Start.
+        self.start_vcpus(vcpus)
+         */
     }
 
-    pub fn pause_vm(name: &str) {
-        println!("VM {} paused", name);
-    }
-
-    pub fn resume_vm(name: &str) {
-        println!("VM {} resumed", name);
-    }
-
-    pub fn stop_vm(name: &str) {
-        println!("VM {} stopped", name);
+    pub fn start(&self) -> Result<()> {
+        Ok(())
     }
 }
