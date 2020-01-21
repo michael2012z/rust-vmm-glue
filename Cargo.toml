@@ -7,7 +7,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-kvm-bindings = { git = "https://github.com/rust-vmm/kvm-bindings", branch = "master" }
+kvm-bindings = { version = ">=0.2.0", features = ["fam-wrappers"] }
 kvm-ioctls = { git = "https://github.com/rust-vmm/kvm-ioctls", branch = "master" }
 
 [dependencies.clap]

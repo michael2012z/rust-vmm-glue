@@ -50,15 +50,10 @@ name = "glue"
 version = "0.1.0"
 dependencies = [
  "clap 2.33.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "kvm-bindings 0.2.0 (git+https://github.com/rust-vmm/kvm-bindings)",
+ "kvm-bindings 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "kvm-ioctls 0.4.0 (git+https://github.com/rust-vmm/kvm-ioctls)",
  "vm-memory 0.1.0 (git+https://github.com/rust-vmm/vm-memory)",
 ]
-
-[[package]]
-name = "kvm-bindings"
-version = "0.2.0"
-source = "git+https://github.com/rust-vmm/kvm-bindings#2a413666f25b01bfeed0fbc8f6f71137fa8c7113"
 
 [[package]]
 name = "kvm-bindings"
@@ -175,7 +170,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum bitflags 1.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "cf1de2fe8c75bc145a2f577add951f8134889b4795d47466a54a5c846d691693"
 "checksum cast 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)" = "4b9434b9a5aa1450faa3f9cb14ea0e8c53bb5d2b3c1bfd1ab4fc03e9f33fbfb0"
 "checksum clap 2.33.0 (registry+https://github.com/rust-lang/crates.io-index)" = "5067f5bb2d80ef5d68b4c87db81601f0b75bca627bc2ef76b141d7b846a3c6d9"
-"checksum kvm-bindings 0.2.0 (git+https://github.com/rust-vmm/kvm-bindings)" = "<none>"
 "checksum kvm-bindings 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "d381156ad52005b4655a9421401f02b80f9f049e653496e3ea6639a83fc12453"
 "checksum kvm-ioctls 0.4.0 (git+https://github.com/rust-vmm/kvm-ioctls)" = "<none>"
 "checksum libc 0.2.66 (registry+https://github.com/rust-lang/crates.io-index)" = "d515b1f41455adea1313a4a2ac8a8a477634fbae63cc6100e3aebb207ce61558"

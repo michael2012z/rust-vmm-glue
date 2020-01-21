@@ -7,6 +7,7 @@ mod config;
 mod cpu;
 mod error;
 mod memory;
+mod regs;
 mod vm;
 mod vmm;
 
@@ -25,7 +26,7 @@ fn main() {
 
             let vm_config = config::VmConfig::new(cpus, mem);
 
-            vmm::Vmm::new().unwrap().run_vm(vm_config);
+            vmm::Vmm::new().unwrap().run_vm(vm_config).unwrap();
         }
         ("pause", Some(pause_matches)) => {
             let name = pause_matches.value_of("name").unwrap();
