@@ -17,8 +17,7 @@ impl Vm {
         let fd = kvm.create_vm().unwrap();
 
         // Setup memory.
-        let mut memory = VmMemory::new()?;
-        memory.vm_memory_init(vm_config.memory_size as usize);
+        let memory = VmMemory::new(vm_config.memory_size as usize)?;
 
         let cpus = VmCpu::new()?;
 
