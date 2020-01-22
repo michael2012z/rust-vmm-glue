@@ -1,6 +1,7 @@
 #[macro_use]
 extern crate clap;
 use clap::App;
+use std::path::PathBuf;
 use std::*;
 
 mod config;
@@ -23,8 +24,13 @@ fn main() {
 
             let cpus = run_matches.value_of("cpus").unwrap().parse::<u8>().unwrap();
             let mem = run_matches.value_of("mem").unwrap().parse::<u64>().unwrap();
+            let kernel_path = run_matches.value_of("kernel_path").unwrap();
+            let kernel_path = PathBuf::from(kernel_path);
+            //let kernel_args = run_matches.value_of("kernel_args").unwrap();
+            let disk_path = run_matches.value_of("disk_path").unwrap();
+            let disk_path = PathBuf::from(disk_path);
 
-            let vm_config = config::VmConfig::new(cpus, mem);
+            let vm_config = config::VmConfig::new(cpus, mem, kernel_path, disk_path);
 
             vmm::Vmm::new().unwrap().run_vm(vm_config).unwrap();
         }

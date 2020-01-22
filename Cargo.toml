@@ -9,6 +9,7 @@ edition = "2018"
 [dependencies]
 kvm-bindings = { version = ">=0.2.0", features = ["fam-wrappers"] }
 kvm-ioctls = { git = "https://github.com/rust-vmm/kvm-ioctls", branch = "master" }
+linux-loader = { git = "https://github.com/michael2012z/linux-loader.git", branch = "support_aarch64_test" }
 
 [dependencies.clap]
 version = "2.33.0"

@@ -96,6 +96,11 @@ impl VmLayout {
         */
         VmLayout::DRAM_MEM_START
     }
+
+    /// Returns the memory address where the kernel could be loaded.
+    pub fn get_kernel_start() -> u64 {
+        VmLayout::DRAM_MEM_START
+    }
 }
 
 #[derive(PartialEq)]
