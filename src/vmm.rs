@@ -28,9 +28,9 @@ impl Vmm {
             vm_config.boot_vcpus, vm_config.memory_size
         );
 
-        let vm = Vm::new(&self.kvm, vm_config)?;
+        let mut vm = Vm::new(&self.kvm, vm_config)?;
 
-        vm.start()
+        vm.boot()
     }
 
     pub fn pause_vm(&self, name: &str) {

@@ -56,16 +56,16 @@ impl VmLayout {
     /// Start of RAM on 64 bit ARM.
     pub const DRAM_MEM_START: u64 = 0x8000_0000; // 2 GB.
     /// The maximum addressable RAM address.
-    pub const DRAM_MEM_END: u64 = 0x00FF_8000_0000; // 1024 - 2 = 1022 GB.
+    // pub const DRAM_MEM_END: u64 = 0x00FF_8000_0000; // 1024 - 2 = 1022 GB.
     /// The maximum RAM size.
-    pub const DRAM_MEM_MAX_SIZE: u64 = VmLayout::DRAM_MEM_END - VmLayout::DRAM_MEM_START;
+    // pub const DRAM_MEM_MAX_SIZE: u64 = VmLayout::DRAM_MEM_END - VmLayout::DRAM_MEM_START;
 
     /// Kernel command line maximum size.
     /// As per `arch/arm64/include/uapi/asm/setup.h`.
-    pub const CMDLINE_MAX_SIZE: usize = 2048;
+    // pub const CMDLINE_MAX_SIZE: usize = 2048;
 
     /// Maximum size of the device tree blob as specified in https://www.kernel.org/doc/Documentation/arm64/booting.txt.
-    pub const FDT_MAX_SIZE: usize = 0x20_0000;
+    // pub const FDT_MAX_SIZE: usize = 0x20_0000;
 
     // As per virt/kvm/arm/vgic/vgic-kvm-device.c we need
     // the number of interrupts our GIC will support to be:
@@ -74,16 +74,16 @@ impl VmLayout {
     // * a multiple of 32.
     // We are setting up our interrupt controller to support a maximum of 128 interrupts.
     /// First usable interrupt on aarch64.
-    pub const IRQ_BASE: u32 = 32;
+    // pub const IRQ_BASE: u32 = 32;
 
     /// Last usable interrupt on aarch64.
-    pub const IRQ_MAX: u32 = 159;
+    // pub const IRQ_MAX: u32 = 159;
 
     /// Below this address will reside the GIC, above this address will reside the MMIO devices.
-    pub const MAPPED_IO_START: u64 = (1 << 30); // 1 GB
+    // pub const MAPPED_IO_START: u64 = (1 << 30); // 1 GB
 
     // Auxiliary function to get the address where the device tree blob is loaded.
-    pub fn get_fdt_addr(mem: &GuestMemoryMmap) -> u64 {
+    pub fn get_fdt_addr(_mem: &GuestMemoryMmap) -> u64 {
         // If the memory allocated is smaller than the size allocated for the FDT,
         // we return the start of the DRAM so that
         // we allow the code to try and load the FDT.
@@ -114,13 +114,6 @@ pub struct VmMemory {
 }
 
 impl VmMemory {
-    /// Start of RAM on 64 bit ARM.
-    pub const DRAM_MEM_START: u64 = 0x8000_0000; // 2 GB.
-    /// The maximum addressable RAM address.
-    pub const DRAM_MEM_END: u64 = 0x00FF_8000_0000; // 1024 - 2 = 1022 GB.
-    /// The maximum RAM size.
-    pub const DRAM_MEM_MAX_SIZE: u64 = VmMemory::DRAM_MEM_END - VmMemory::DRAM_MEM_START;
-
     pub fn new(mem_size_mib: usize) -> Result<Self> {
         let mem_size_bytes = mem_size_mib << 20;
 
