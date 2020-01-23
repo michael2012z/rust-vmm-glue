@@ -20,28 +20,35 @@ pub struct Vm {
 impl Vm {
     pub fn new(kvm: &Kvm, vm_config: VmConfig) -> Result<Self> {
         // Create VM.
-        let fd = kvm.create_vm().unwrap();
+        let vm_fd = kvm.create_vm().unwrap();
 
         // Setup memory.
-        let memory = VmMemory::new(vm_config.memory_size as usize)?;
+        let vm_memory = VmMemory::new(vm_config.memory_size as usize)?;
 
-        let cpus = VmCpu::new()?;
+        let vm_cpu = VmCpu::new()?;
 
         Ok(Vm {
-            fd,
-            memory,
-            cpus,
+            fd: vm_fd,
+            memory: vm_memory,
+            cpus: vm_cpu,
             config: vm_config,
         })
     }
 
-    pub fn start(&self) -> Result<()> {
+    pub fn boot(&mut self) -> Result<()> {
         // Setup CPUs
         let entry_addr = self.load_kernel().unwrap();
+        self.cpus
+            .create_vcpus(
+                &self.fd,
+                self.config.boot_vcpus as u64,
+                entry_addr,
+                &self.memory.guest_mem,
+            )
+            .unwrap();
+        self.cpus.start_vcpus().unwrap();
 
         /*
-        let vcpus = self.create_vcpus(entry_addr)?;
-
         self.setup_irqchip()?;
 
         // Setup devices.

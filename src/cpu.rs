@@ -2,6 +2,8 @@ use crate::error::*;
 use crate::regs;
 use kvm_bindings;
 use kvm_ioctls::{VcpuFd, VmFd};
+use std::sync::{Arc, Barrier};
+use std::thread;
 use vm_memory::{GuestAddress, GuestMemoryMmap};
 
 pub struct Vcpu {
@@ -44,22 +46,38 @@ impl Vcpu {
 
         Ok(())
     }
+
+    /*
+        pub fn run(&self) -> Result<()> {
+            Ok(())
+        }
+    */
+
+    pub fn fake_run() -> Result<()> {
+        Ok(())
+    }
 }
 
-pub struct VmCpu {}
+pub struct VmCpu {
+    cpus: Option<Vec<Vcpu>>,
+    cpu_count: usize,
+}
 
 impl VmCpu {
     pub fn new() -> Result<Self> {
-        Ok(VmCpu {})
+        Ok(VmCpu {
+            cpus: None,
+            cpu_count: 0,
+        })
     }
 
     pub fn create_vcpus(
-        &self,
+        &mut self,
         vm_fd: &VmFd,
         vcpu_count: u64,
         entry_addr: GuestAddress,
         guest_mem: &GuestMemoryMmap,
-    ) -> Result<Vec<Vcpu>> {
+    ) -> Result<()> {
         let mut vcpus = Vec::with_capacity(vcpu_count as usize);
 
         for cpu_index in 0..vcpu_count {
@@ -70,11 +88,37 @@ impl VmCpu {
 
             vcpus.push(vcpu);
         }
-        Ok(vcpus)
+
+        self.cpus = Some(vcpus);
+        self.cpu_count = vcpu_count as usize;
+
+        Ok(())
     }
 
-    pub fn start_vcpus(&mut self, mut vcpus: Vec<Vcpu>) -> Result<()> {
-        //Vcpu::register_kick_signal_handler();
+    pub fn start_vcpus(&mut self) -> Result<()> {
+        // TODO
+        // Totally not ready.
+        let vcpu_thread_barrier = Arc::new(Barrier::new(self.cpu_count));
+        for cpu in self.cpus.as_ref().unwrap() {
+            let vcpu_thread_barrier = vcpu_thread_barrier.clone();
+            let _handle = Some(
+                thread::Builder::new()
+                    .name(format!("vcpu{}", cpu.id))
+                    .spawn(move || {
+                        // Block until all CPUs are ready.
+                        vcpu_thread_barrier.wait();
+                        loop {
+                            match Vcpu::fake_run() {
+                                Err(_e) => {
+                                    break;
+                                }
+                                Ok(()) => {}
+                            }
+                        }
+                    }),
+            );
+        }
+        vcpu_thread_barrier.wait();
         Ok(())
     }
 }
